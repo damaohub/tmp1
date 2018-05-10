@@ -1,0 +1,19 @@
+.iconSet{
+   width: 60px;
+   height: 60px;
+   background: url("../images/icon1.png") no-repeat;
+   background-size: 100% 100%;
+}
+.iconUser{
+  width: 60px;
+  height: 60px;
+  background: url("../images/icon2.png") no-repeat;
+  background-size: 100% 100%;
+}
+.iconList{
+  width: 60px;
+  height: 60px;
+  background: url("../images/icon3.png") no-repeat;
+  background-size: 100% 100%;
+}
+
