@@ -21,21 +21,14 @@ export const constantRouterMap = [
     { path: '/404', component: _import('errorPage/404'), hidden: true },
     { path: '/401', component: _import('errorPage/401'), hidden: true },
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
     name: '首页',
     hidden: true,
     children: [{ path: 'dashboard', component: _import('dashboard/index') }]
-  },
-  {
-    path: '/user/updatepwd',
-    component: Layout,
-    redirect: 'user/updatepwd',
-    icon: 'people',
-    noDropdown: true,
-    hidden: true
   }
+
 ]
 
 export default new Router({
@@ -46,13 +39,19 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/',
+    path: '/device',
     component: Layout,
-    redirect: '/dashboard',
-    name: '首页',
-    hidden: true,
-    children: [{ path: 'dashboard', component: _import('dashboard/index') }]
+    name: '设备管理',
+    meta: {
+      title: '设备管理',
+      icon: 'component'
+    },
+    children: [
+      { path: 'deviceList', component: _import('extend/device/index'), name: '设备列表', meta: { title: '设备列表' }},
+      { path: 'deviceMap', component: _import('extend/device/deviceMap'), name: '设备地图展示', meta: { title: '设备地图展示' }}
+    ]
   },
+
   {
     path: '/data',
     component: Layout,
@@ -64,21 +63,8 @@ export const asyncRouterMap = [
     children: [
       { path: 'orderlist', component: _import('extend/empty'), name: 'orderlist', meta: { title: '订单分析' }},
       { path: 'userlist', component: _import('extend/empty'), name: 'userlist', meta: { title: '用户分析' }},
-      { path: 'devicedatalist', component: _import('extend/empty'), name: 'userlist', meta: { title: '数据分析' }},
-      { path: 'system', component: _import('extend/empty'), name: 'userlist', meta: { title: '系统分析' }}
-    ]
-  },
-  {
-    path: '/device',
-    component: Layout,
-    name: '设备管理',
-    meta: {
-      title: '设备管理',
-      icon: 'component'
-    },
-    children: [
-      { path: 'deviceList', component: _import('extend/device/index'), name: '设备列表', meta: { title: '设备列表' }},
-      { path: 'deviceMap', component: _import('extend/empty'), name: '设备地图展示', meta: { title: '设备地图展示' }}
+      { path: 'devicedatalist', component: _import('extend/empty'), name: 'devicedatalist', meta: { title: '数据分析' }},
+      { path: 'system', component: _import('extend/empty'), name: 'system', meta: { title: '系统分析' }}
     ]
   },
 

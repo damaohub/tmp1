@@ -175,15 +175,6 @@ export default {
   .el-col {
     border-radius: 4px;
   }
-  .bg-green{
-    background: #009688;
-  }
-  .bg-blue{
-    background: #0096d4;
-  }
-  .bg-purple{
-    background:#7986cb;
-  }
 
   .grid-content {
     border-radius: 4px;

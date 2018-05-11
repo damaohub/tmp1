@@ -16,4 +16,13 @@
   background: url("../images/icon3.png") no-repeat;
   background-size: 100% 100%;
 }
+.bg-green{
+  background: #009688;
+}
+.bg-blue{
+  background: #0096d4;
+}
+.bg-purple{
+  background:#7986cb;
+}
 
