@@ -53,6 +53,34 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/system',
+    component: Layout,
+    name: '系统管理',
+    meta: {
+      title: '系统管理',
+      icon: 'component'
+    },
+    children: [
+      { path: 'role', component: _import('systemAdmin/role'), name: '角色管理', meta: { title: '角色管理' }},
+      { path: 'systemuser', component: _import('systemAdmin/system'), name: '系统用户', meta: { title: '系统用户' }}
+    ]
+  },
+
+  {
+    path: '/sale',
+    component: Layout,
+    name: '售后管理',
+    meta: {
+      title: '售后管理',
+      icon: 'component'
+    },
+    children: [
+      { path: 'alarm', component: _import('extend/device/warnList'), name: '告警设备列表', meta: { title: '告警设备列表' }},
+      { path: 'alarmLevel', component: _import('extend/empty'), name: '告警级别管理', meta: { title: '告警级别管理' }}
+    ]
+  },
+
+  {
     path: '/data',
     component: Layout,
     name: '数据分析',
@@ -68,19 +96,7 @@ export const asyncRouterMap = [
     ]
   },
 
-  {
-    path: '/sale',
-    component: Layout,
-    name: '售后管理',
-    meta: {
-      title: '售后管理',
-      icon: 'component'
-    },
-    children: [
-      { path: 'alarm', component: _import('extend/empty'), name: '告警设备列表', meta: { title: '告警设备列表' }},
-      { path: 'alarmLevel', component: _import('extend/empty'), name: '告警级别管理', meta: { title: '告警级别管理' }}
-    ]
-  },
+
   {
     path: '/order',
     component: Layout,
@@ -124,19 +140,6 @@ export const asyncRouterMap = [
 
     ]
   },
-  {
-    path: '/system',
-    component: Layout,
-    name: '系统管理',
-    meta: {
-      title: '系统管理',
-      icon: 'component'
-    },
-    children: [
-      { path: 'appuser', component: _import('extend/empty'), name: '客户管理', meta: { title: '客户管理' }},
-      { path: 'role', component: _import('extend/empty'), name: '角色管理', meta: { title: '角色管理' }},
-      { path: 'systemuser', component: _import('extend/empty'), name: '系统用户', meta: { title: '系统用户' }}
-    ]
-  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]

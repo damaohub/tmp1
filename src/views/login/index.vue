@@ -108,6 +108,7 @@ export default {
     }
   },
   created() {
+
         // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {

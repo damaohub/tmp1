@@ -41,6 +41,37 @@
 
     </el-row>
 
+    <div class="selectBox">
+      <el-select v-model="value1" placeholder="设备MAC">
+        <el-option
+          v-for="item in options1"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled">
+        </el-option>
+      </el-select>
+
+      <el-select v-model="value2" placeholder="设备状态">
+        <el-option
+          v-for="item in options2"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled">
+        </el-option>
+      </el-select>
+
+      <el-select v-model="value3" placeholder="在线状态">
+        <el-option
+          v-for="item in options3"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled">
+        </el-option>
+      </el-select>
+    </div>
     <!--地图容器-->
     <div id="XSDFXPage" class="XSDFXPage"></div>
   </div>
@@ -52,7 +83,45 @@
     name: 'devicemap',
     data() {
         return {
-
+          options1: [{
+            value: '设备MAC',
+            label: ''
+          }, {
+            value: '设备序列号',
+            label: '设备序列号',
+          }, {
+            value: '设备名称',
+            label: '设备名称'
+          }, {
+            value: '投放点',
+            label: '投放点'
+          }],
+          value1: '',
+          options2: [{
+            value: '设备状态',
+            label: ''
+          }, {
+            value: '使用中',
+            label: '使用中',
+          }, {
+            value: '空闲',
+            label: '空闲'
+          }, {
+            value: '障碍',
+            label: '障碍'
+          }],
+          value2: '',
+          options3: [{
+            value: '在线状态',
+            label: ''
+          }, {
+            value: '在线',
+            label: '在线',
+          }, {
+            value: '离线',
+            label: '离线'
+          }],
+          value3: '',
         };
     },
 
@@ -77,6 +146,9 @@
 </script>
 
 <style scoped>
+  .selectBox{
+    margin-top: 20px;
+  }
   .XSDFXPage{
     width: 100%;
     height: 800px;
@@ -114,4 +186,5 @@
   .colcount{
     font-size: 27px;
   }
+
 </style>
