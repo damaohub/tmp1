@@ -1,13 +1,8 @@
 import http from '@/utils/fetch'
 
-export function currentDayTotal() {
+export function obtainIndexVo() {
   return http.get(
-    'index/currentDayTotal'
+    '/api/dashboard/obtainIndexVo'
   )
 }
 
-export function getCurrentAgentInfo() {
-  return http.get(
-    'index/currentAgent'
-  )
-}

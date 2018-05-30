@@ -337,7 +337,7 @@
           label: ''
         }, {
           value: '使用中',
-          label: '使用中',
+          label: '使用中'
         }, {
           value: '空闲',
           label: '空闲'
@@ -351,7 +351,7 @@
           label: ''
         }, {
           value: '在线',
-          label: '在线',
+          label: '在线'
         }, {
           value: '离线',
           label: '离线'
@@ -430,6 +430,7 @@
       updateData() {
         const tempData = Object.assign({}, this.temp)
         updateDevice(tempData).then(() => {
+          this.dialogFormVisible = false
           this.handleFilter()
           this.$notify({
             title: '成功',
