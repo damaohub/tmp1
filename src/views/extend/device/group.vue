@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="filter-container">
-      <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item"
+      <el-input @keyup.enter.native="handleFilter"   placeholder="请输入组名" style="width: 200px;" class="filter-item"
                 v-model="listQuery.groupName">
       </el-input>
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">查询</el-button>
@@ -35,12 +35,7 @@
 
       <el-table-column min-width="100px" label="封面图片">
         <template scope="scope">
-          <img :src="scope.row.icon" height="80" width="80"></img>
-        </template>
-      </el-table-column>
-      <el-table-column min-width="100px" label="位置排序">
-        <template scope="scope">
-          <span>{{scope.row.sort}}</span>
+          <img :src="scope.row.videoCover" height="80" width="80"></img>
         </template>
       </el-table-column>
       <el-table-column align="left" label="操作"  width="250">
@@ -57,16 +52,28 @@
         <el-form-item label="组名称">
           <el-input v-model="temp.groupName"></el-input>
         </el-form-item>
+        <el-form-item label="logo地址">
+          <el-input v-model="temp.icon"></el-input>
+        </el-form-item>
         <el-form-item label="视频链接(必须带http:)">
           <el-input v-model="temp.videoUrl"></el-input>
         </el-form-item>
+        <el-form-item label="封面地址">
+          <el-input v-model="temp.coverUrl"></el-input>
+        </el-form-item>
+        <el-input
+          label="文字描述"
+          v-model="temp.memo"
+          type="textarea"
+          :rows="6"
+          placeholder="">
+        </el-input>
 
 
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button v-if="dialogStatus=='create'" type="primary" @click="createData">确 定</el-button>
-        <el-button v-else type="primary" @click="updateData">确 定</el-button>
+        <el-button type="primary" @click="updateData">确 定</el-button>
       </div>
     </el-dialog>
     <div class="pagination-container">
@@ -81,7 +88,7 @@
 </template>
 
 <script>
-  import { queryDeviceGroupList, queryDeviceGroupCount, updateDviceGroup} from '@/api/device'
+  import { queryDeviceGroupList, queryDeviceGroupCount, updateDeviceGroup } from '@/api/device'
 
   import waves from '@/directive/waves'
 
@@ -104,7 +111,9 @@
         temp: {
           id: undefined,
           groupName: '',
-          videoUrl: ''
+          videoUrl: '',
+          videoCover: '',
+          icon: ''
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -152,22 +161,7 @@
       },
       resetTemp() {
         this.temp = {
-          id: undefined,
-          menuId: '',
-          sort: 0,
-        }
-      },
-      handleCreate() {
-        this.resetTemp()
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
-        queryMenuListForContent().then(response => {
-          this.parentMenuList = response.data.data
-        })
-      },
-      uploadOk(response, file, fileList) {
-        if (response.code === 200) {
-          this.temp.image = response.data
+          id: undefined
         }
       },
 
@@ -176,6 +170,10 @@
           id: row.id,
           groupName: row.groupName,
           videoUrl: row.videoUrl,
+          memo: row.memo,
+          coverUrl: row.videoCover,
+          icon: row.icon
+
         }
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -184,6 +182,18 @@
         console.log('关闭对话框')
       },
       updateData() {
+        debugger
+        const tempData = Object.assign({}, this.temp)
+        updateDeviceGroup(tempData).then(() => {
+          this.dialogFormVisible = false
+          this.handleFilter()
+          this.$notify({
+            title: '成功',
+            message: '更新成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
       }
     }
   }

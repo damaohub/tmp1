@@ -18,7 +18,7 @@ export function queryDeviceGroupCount(requestVo) {
   return http.post(url, JSON.stringify(requestVo))
 }
 
-export function updateDeviceGorup(requestVo) {
+export function updateDeviceGroup(requestVo) {
   const url = '/api/deviceGroup/update'
   return http.post(url, JSON.stringify(requestVo))
 }
