@@ -1,30 +1,11 @@
 <template>
   <div class="app-container calendar-list-container">
     <div class="selectBox">
-      <el-select v-model="value1" placeholder="设备MAC">
-        <el-option
-          v-for="item in options1"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-          :disabled="item.disabled">
-        </el-option>
-      </el-select>
-
-      <el-select v-model="value2" placeholder="设备状态">
-        <el-option
-          v-for="item in options2"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-          :disabled="item.disabled">
-        </el-option>
-      </el-select>
 
       <el-select v-model="value3" placeholder="在线状态">
         <el-option
+          v-model="listQuery.onlineStatus"
           v-for="item in options3"
-          :key="item.value"
           :label="item.label"
           :value="item.value"
           :disabled="item.disabled">
@@ -351,14 +332,16 @@
           label: '障碍'
         }],
         value2: '',
-        options3: [{
-          value: '在线状态',
-          label: ''
-        }, {
-          value: '在线',
+        options3: [
+          {
+            value: '',
+            label: '全部'
+          },
+          {
+          value: '1',
           label: '在线'
         }, {
-          value: '离线',
+          value: '2',
           label: '离线'
         }],
         value3: '',
@@ -368,7 +351,8 @@
         listQuery: {
           page: 1,
           limit: 50,
-          mac: undefined
+          mac: undefined,
+          onlineStatus:1
         },
         temp: {
           id: undefined,

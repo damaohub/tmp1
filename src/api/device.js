@@ -9,6 +9,19 @@ export function queryDeviceCount(deviceRequestVo) {
   return http.post(url, JSON.stringify(deviceRequestVo))
 }
 
+export function queryDeviceGroupList(requestVo) {
+  const url = '/api/deviceGroup/select'
+  return http.post(url, JSON.stringify(requestVo))
+}
+export function queryDeviceGroupCount(requestVo) {
+  const url = '/api/deviceGroup/selectCount'
+  return http.post(url, JSON.stringify(requestVo))
+}
+
+export function updateDeviceGorup(requestVo) {
+  const url = '/api/deviceGroup/update'
+  return http.post(url, JSON.stringify(requestVo))
+}
 export function updateDevice(deviceRequestVo) {
   const url = '/api/device/updateDevice'
   return http.post(url, JSON.stringify(deviceRequestVo))
