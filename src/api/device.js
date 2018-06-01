@@ -32,7 +32,7 @@ export function queryDeviceTypeList(requestVo) {
   return http.post(url, JSON.stringify(requestVo))
 }
 export function queryDeviceTypeCount(requestVo) {
-  const url = '/api/device/typeCount'
+  const url = '/api/device/selectCount'
   return http.post(url, JSON.stringify(requestVo))
 }
 

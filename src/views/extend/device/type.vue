@@ -29,12 +29,12 @@
       </el-table-column>
       <el-table-column min-width="200px" label="传感器列表">
         <template scope="scope">
-          <span>{{scope.row.sensorList}}</span>
+          <span>{{scope.row.sensorListStr}}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="200px" label="功能列表">
         <template scope="scope">
-          <span>{{scope.row.funcList}}</span>
+          <span>{{scope.row.funcListStr}}</span>
         </template>
       </el-table-column>
 
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import { queryDeviceTypeList, queryDeviceTypeCount, updateDeviceType,createDeviceType } from '@/api/device'
+  import { queryDeviceTypeList, queryDeviceTypeCount, updateDeviceType } from '@/api/device'
 
   import waves from '@/directive/waves'
 
@@ -89,7 +89,7 @@
         listQuery: {
           page: 1,
           limit: 20,
-          groupName: ''
+          name: ''
         },
         temp: {
 
@@ -147,12 +147,7 @@
       handleUpdate(row) {
         this.temp = {
           id: row.id,
-          groupName: row.groupName,
-          videoUrl: row.videoUrl,
-          memo: row.memo,
-          coverUrl: row.videoCover,
-          icon: row.icon
-
+          typeName: row.typeName
         }
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
