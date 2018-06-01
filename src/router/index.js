@@ -49,6 +49,7 @@ export const asyncRouterMap = [
     children: [
       { path: 'deviceList', component: _import('extend/device/index'), name: '设备列表', meta: { title: '设备列表' }},
       { path: 'deviceGroup', component: _import('extend/device/group'), name: '设备组列表', meta: { title: '设备组列表' }},
+      { path: 'deviceType', component: _import('extend/device/type'), name: '设备类型管理', meta: { title: '设备类型管理' }},
       { path: 'deviceMap', component: _import('extend/device/deviceMap'), name: '设备地图展示', meta: { title: '设备地图展示' }}
     ]
   },
