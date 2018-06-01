@@ -15,8 +15,8 @@
         <div class="grid-content bg-green">
           <i class="iconSet"></i>
           <div class="colBox">
-            <div class="colname">今日设备新增数</div>
-            <div class="colcount">0</div>
+            <div class="colname">在线设备总数</div>
+            <div class="colcount">{{ onlineCount }}</div>
           </div>
         </div>
       </el-col>
@@ -34,7 +34,7 @@
           <i class="iconUser"></i>
           <div class="colBox">
             <div class="colname">当前用户人数</div>
-            <div class="colcount">1403</div>
+            <div class="colcount">{{userCount}}</div>
           </div>
         </div>
       </el-col>
@@ -112,15 +112,15 @@
     data() {
       return {
         totalDevcieCount: 0,
-        statisticsData: {
-          dayPickTotal: 0,
-          daySuccessTotal: 0
-        }
+        onlineCount: 0,
+        userCount: 0
       }
     },
     created() {
       obtainIndexVo().then(response => {
         this.totalDevcieCount = response.data.data.deviceCount
+        this.onlineCount = response.data.data.onlineCount
+        this.userCount = response.data.data.userCount
       })
     },
     methods: {

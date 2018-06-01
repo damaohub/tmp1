@@ -73,13 +73,15 @@
         <template scope="scope">
           <el-button size="small" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
+          <el-button size="small" type="success" @click="handlerOta(scope.row)">Ota
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" size="large">
       <el-form class="small-space" :model="temp" label-position="left" label-width="120px">
         <el-form-item label="mac地址:">
-         <span>{{temp.mac}}</span>
+          <span>{{temp.mac}}</span>
         </el-form-item>
         <el-form-item label="设备名称:">
           <el-input v-model="temp.name"></el-input>
@@ -162,48 +164,48 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="订单列表" name="third">
-              <el-table
-                :data="tableDataList"
-                border
-                style="width: 100%">
-                <el-table-column
-                  prop="date"
-                  label="订单号"
-                  width="180">
-                </el-table-column>
-                <el-table-column
-                  prop="name"
-                  label="用户昵称"
-                  width="180">
-                </el-table-column>
-                <el-table-column label="投放点">
-                </el-table-column>
-                <el-table-column label="设备Mac">
-                </el-table-column>
-                <el-table-column label="支付费用">
-                </el-table-column>
-                <el-table-column label="支付时间">
-                </el-table-column>
-                <el-table-column label="支付类型">
-                </el-table-column>
-                <el-table-column label="收费名称">
-                </el-table-column>
-                <el-table-column label="订单状态">
-                </el-table-column>
-                <el-table-column label="操作">
-                </el-table-column>
-              </el-table>
-              <div style="margin-top: 10px;text-align: center;">
-                <el-pagination
-                  @size-change="handleSizeChange1"
-                  @current-change="handleCurrentChange1"
-                  :current-page="currentPage"
-                  :page-sizes="[100, 200, 300, 400]"
-                  :page-size="100"
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="400">
-                </el-pagination>
-              </div>
+            <el-table
+              :data="tableDataList"
+              border
+              style="width: 100%">
+              <el-table-column
+                prop="date"
+                label="订单号"
+                width="180">
+              </el-table-column>
+              <el-table-column
+                prop="name"
+                label="用户昵称"
+                width="180">
+              </el-table-column>
+              <el-table-column label="投放点">
+              </el-table-column>
+              <el-table-column label="设备Mac">
+              </el-table-column>
+              <el-table-column label="支付费用">
+              </el-table-column>
+              <el-table-column label="支付时间">
+              </el-table-column>
+              <el-table-column label="支付类型">
+              </el-table-column>
+              <el-table-column label="收费名称">
+              </el-table-column>
+              <el-table-column label="订单状态">
+              </el-table-column>
+              <el-table-column label="操作">
+              </el-table-column>
+            </el-table>
+            <div style="margin-top: 10px;text-align: center;">
+              <el-pagination
+                @size-change="handleSizeChange1"
+                @current-change="handleCurrentChange1"
+                :current-page="currentPage"
+                :page-sizes="[100, 200, 300, 400]"
+                :page-size="100"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="400">
+              </el-pagination>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="运行日志" name="fourth">
             <el-table
@@ -264,15 +266,57 @@
               </el-pagination>
             </div>
           </el-tab-pane>
+          <el-tab-pane label="升级日志" name="six">
+            <el-table
+              :data="otaDataList"
+              border
+              style="width: 100%">
+              <el-table-column prop="date" label="升级时间"></el-table-column>
+              <el-table-column prop="name" label="文件名称"></el-table-column>
+              <el-table-column prop="name" label="文件大小"></el-table-column>
+              <el-table-column prop="name" label="md5"></el-table-column>
+            </el-table>
+            <div style="margin-top: 10px;text-align: center;">
+              <el-pagination
+                @size-change="handleSizeChange1"
+                @current-change="handleCurrentChange1"
+                :current-page="currentPage"
+                :page-sizes="[100, 200, 300, 400]"
+                :page-size="100"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="400">
+              </el-pagination>
+            </div>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
 
 
-
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button  type="primary" @click="updateData">确 定</el-button>
+        <el-button type="primary" @click="updateData">确 定</el-button>
       </div>
+    </el-dialog>
+    <el-dialog :title="otaDeviceDia" :visible.sync="otaFormVisible" >
+      <el-form class="small-space" :model="temp" label-position="left" label-width="120px">
+        <el-form-item label="设备id:">
+          <span>{{temp.deviceId}}</span>
+        </el-form-item>
+        <el-form-item label="文件">
+          <el-upload
+            :action="baseUrl + '/api/device/upload'"
+            :show-file-list="false"
+            :on-success="handleOtaFileSucess"
+            :before-upload="beforeFileUpload">
+
+          </el-upload>
+        </el-form-item>
+
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="otaFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="otaDevice">确 定</el-button>
+        </div>
+      </el-form>
     </el-dialog>
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -286,6 +330,7 @@
 </template>
 
 <script>
+  import { baseUrl, baseImgPath } from '@/config/env'
   import { queryDeviceList, queryDeviceCount, updateDevice } from '@/api/device'
   import waves from '@/directive/waves' // 水波纹指令
 
@@ -296,20 +341,23 @@
     },
     data() {
       return {
-        currentPage:1,
+        baseUrl,
+        baseImgPath,
+        currentPage: 1,
         tableDataList: [{
           date: '123456',
-          name: '小王',
+          name: '小王'
         }],
-        svalue1:false,
-        svalue2:false,
+        otaFormVisible: false,
+        svalue1: false,
+        svalue2: false,
         activeName: 'first',
         options1: [{
           value: '设备MAC',
           label: ''
         }, {
           value: '设备序列号',
-          label: '设备序列号',
+          label: '设备序列号'
         }, {
           value: '设备名称',
           label: '设备名称'
@@ -338,12 +386,12 @@
             label: '全部'
           },
           {
-          value: '1',
-          label: '在线'
-        }, {
-          value: '2',
-          label: '离线'
-        }],
+            value: '1',
+            label: '在线'
+          }, {
+            value: '2',
+            label: '离线'
+          }],
         value3: '',
         list: null,
         total: null,
@@ -352,14 +400,16 @@
           page: 1,
           limit: 50,
           mac: undefined,
-          onlineStatus:1
+          onlineStatus: 1
         },
         temp: {
           id: undefined,
           name: ''
         },
+        otaDataList: [],
         dialogFormVisible: false,
         dialogStatus: '',
+        otaDeviceDia: '升级设备',
         textMap: {
           update: '编辑',
           create: '创建'
@@ -370,8 +420,24 @@
       this.getList()
     },
     methods: {
-      handleSizeChange1(){},
-      handleCurrentChange1(){},
+      handleOtaFileSucess(res, file) {
+        if (res.data.code === 200) {
+          this.temp.fileName = res.data.data
+        } else {
+          this.$message.error('上传文件失败！')
+        }
+      },
+      beforeFileUpload(file) {
+        const isLt40M = file.size / 1024 / 1024 < 40
+        if (!isLt40M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isLt40M
+      },
+      handleSizeChange1() {
+      },
+      handleCurrentChange1() {
+      },
       getList() {
         this.listLoading = true
         queryDeviceCount(this.listQuery).then(response => {
@@ -407,6 +473,12 @@
       },
       createData() {
       },
+      handlerOta(row) {
+        this.otaFormVisible = true
+        this.temp = {
+          deviceId: row.deviceId
+        }
+      },
       handleUpdate(row) {
         this.temp = {
           id: row.id,
@@ -415,6 +487,9 @@
         }
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
+      },
+      otaDevice() {
+
       },
       updateData() {
         const tempData = Object.assign({}, this.temp)
@@ -434,18 +509,54 @@
 </script>
 
 <style scoped>
-  .el-form-item .el-input{
+  .el-form-item .el-input {
     width: 300px;
   }
-  .selectBox{
+
+  .selectBox {
     margin-bottom: 10px;
   }
-.findBox{
-  margin-top: 5px;
-  margin-bottom: 10px;
-  text-align: right;
-}
-  .el-button i{
+
+  .findBox {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+
+  .el-button i {
     margin-right: 5px;
+  }
+  .button_submit{
+    text-align: center;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #20a0ff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    display: block;
+  }
+  .el-table .info-row {
+    background: #c9e5f5;
+  }
+
+  .el-table .positive-row {
+    background: #e2f0e4;
   }
 </style>
