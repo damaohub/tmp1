@@ -2,9 +2,8 @@
   <div class="app-container calendar-list-container">
     <div class="selectBox">
 
-      <el-select v-model="value3" placeholder="在线状态">
+      <el-select v-model="listQuery.onlineStatus" placeholder="在线状态">
         <el-option
-          v-model="listQuery.onlineStatus"
           v-for="item in options3"
           :label="item.label"
           :value="item.value"
@@ -323,7 +322,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="otaFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="updateData">确 定</el-button>
+        <el-button type="primary" @click="handlerOtaDevice">确 定</el-button>
       </div>
     </el-dialog>
     <div class="pagination-container">
@@ -339,7 +338,7 @@
 
 <script>
   import { baseUrl, baseImgPath } from '@/config/env'
-  import { queryDeviceList, queryDeviceCount, updateDevice } from '@/api/device'
+  import { queryDeviceList, queryDeviceCount, updateDevice, otaDevice } from '@/api/device'
   import waves from '@/directive/waves' // 水波纹指令
 
   export default {
@@ -400,7 +399,6 @@
             value: '2',
             label: '离线'
           }],
-        value3: '',
         list: null,
         total: null,
         listLoading: true,
@@ -429,8 +427,9 @@
     },
     methods: {
       handleOtaFileSuccess(res, file) {
-        if (res.data.code === 200) {
-          this.temp.fileName = res.data.data
+        if (res.code === 200) {
+          this.$message.error('上传成功！')
+          this.temp.fileName = res.data
         } else {
           this.$message.error('上传文件失败！')
         }
@@ -494,8 +493,22 @@
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
       },
-      otaDevice() {
-
+      handlerOtaDevice() {
+        const requestVo = {
+          'id': this.temp.id,
+          'fileName': this.temp.fileName
+        }
+        const tempData = Object.assign({}, requestVo)
+        otaDevice(tempData).then(() => {
+          this.otaFormVisible = false
+          this.handleFilter()
+          this.$notify({
+            title: '成功',
+            message: '推送成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
       },
       updateData() {
         const tempData = Object.assign({}, this.temp)
