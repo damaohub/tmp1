@@ -52,8 +52,15 @@
         <el-form-item label="类型名称">
           <el-input v-model="temp.typeName"></el-input>
         </el-form-item>
-        <el-form-item label="功能列表">
-          <el-input v-model="temp.typeName"></el-input>
+        <el-form-item label="升级文件">
+          <el-upload :action="baseUrl + '/api/upload'"
+                     drag :multiple="false"
+                     :before-upload="beforeFileUpload"
+                     :on-success = "handleIconFileSuccess">
+
+          </el-upload>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-form-item>
 
       </el-form>
@@ -75,7 +82,7 @@
 
 <script>
   import { queryDeviceTypeList, queryDeviceTypeCount, updateDeviceType } from '@/api/device'
-
+  import { baseUrl, baseImgPath } from '@/config/env'
   import waves from '@/directive/waves'
 
   export default {
@@ -85,6 +92,8 @@
     },
     data() {
       return {
+        baseUrl,
+        baseImgPath,
         tableKey: 0,
         list: null,
         total: null,
@@ -134,12 +143,19 @@
         this.listQuery.page = val
         this.getList()
       },
-      handleModifyStatus(row, status) {
-        this.$message({
-          message: '操作成功',
-          type: 'success'
-        })
-        row.status = status
+      handleIconFileSuccess(res, file) {
+        if (res.code === 200) {
+          this.temp.icon = res.data
+        } else {
+          this.$message.error('上传文件失败！')
+        }
+      },
+      beforeFileUpload(file) {
+        const isLt40M = file.size / 1024 / 1024 < 40
+        if (!isLt40M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!')
+        }
+        return isLt40M
       },
       resetTemp() {
         this.temp = {
@@ -150,7 +166,8 @@
       handleUpdate(row) {
         this.temp = {
           id: row.id,
-          typeName: row.typeName
+          typeName: row.typeName,
+          icon: row.icon
         }
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
@@ -159,7 +176,6 @@
         console.log('关闭对话框')
       },
       updateData() {
-        debugger
         const tempData = Object.assign({}, this.temp)
         updateDeviceType(tempData).then(() => {
           this.dialogFormVisible = false

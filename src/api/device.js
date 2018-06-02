@@ -42,12 +42,12 @@ export function queryDeviceTypeCount(requestVo) {
 }
 
 export function updateDeviceType(requestVo) {
-  const url = '/api/device/updateType'
+  const url = '/api/device/typeUpdate'
   return http.post(url, JSON.stringify(requestVo))
 }
 
 export function createDeviceType(requestVo) {
-  const url = '/api/device/createType'
+  const url = '/api/device/typeCreate'
   return http.post(url, JSON.stringify(requestVo))
 }
 
