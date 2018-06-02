@@ -38,18 +38,18 @@
         type="selection">
       </el-table-column>
 
-      <el-table-column min-width="100px" label="Id">
+      <el-table-column min-width="30px" label="Id">
         <template scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column min-width="200px" label="设备id">
+      <el-table-column min-width="100px" label="设备id">
         <template scope="scope">
           <span>{{scope.row.deviceId}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="200px" label="设备名称">
+      <el-table-column min-width="100px" label="设备名称">
         <template scope="scope">
           <span>{{scope.row.name}}</span>
         </template>
@@ -59,12 +59,12 @@
           <span>{{scope.row.mac}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" label="绑定状态">
+      <el-table-column min-width="50px" label="绑定状态">
         <template scope="scope">
           <span>{{scope.row.bindStatus}}</span>
         </template>
       </el-table-column>
-      <el-table-column min-width="100px" label="在线状态">
+      <el-table-column min-width="50px" label="在线状态">
         <template scope="scope">
           <span>{{scope.row.onlineStatus}}</span>
         </template>
@@ -302,21 +302,29 @@
         <el-form-item label="设备id:">
           <span>{{temp.deviceId}}</span>
         </el-form-item>
-        <el-form-item label="文件">
-          <el-upload
-            :action="baseUrl + '/api/device/upload'"
-            :show-file-list="false"
-            :on-success="handleOtaFileSucess"
-            :before-upload="beforeFileUpload">
+        <el-form-item label="软件版本:">
+          <span>{{temp.software}}</span>
+        </el-form-item>
+        <el-form-item label="硬件版本:">
+          <span>{{temp.hardware}}</span>
+        </el-form-item>
+        <el-form-item label="升级文件">
+          <el-upload :action="baseUrl + '/api/device/upload'"
+                     drag :multiple="false"
+                     :before-upload="beforeFileUpload"
+                     :on-success = "handleOtaFileSuccess"
+                     ref="detailImage2">
 
           </el-upload>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-form-item>
 
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="otaFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="otaDevice">确 定</el-button>
-        </div>
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="otaFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateData">确 定</el-button>
+      </div>
     </el-dialog>
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -400,7 +408,7 @@
           page: 1,
           limit: 50,
           mac: undefined,
-          onlineStatus: 1
+          onlineStatus: ''
         },
         temp: {
           id: undefined,
@@ -420,7 +428,7 @@
       this.getList()
     },
     methods: {
-      handleOtaFileSucess(res, file) {
+      handleOtaFileSuccess(res, file) {
         if (res.data.code === 200) {
           this.temp.fileName = res.data.data
         } else {
@@ -475,9 +483,7 @@
       },
       handlerOta(row) {
         this.otaFormVisible = true
-        this.temp = {
-          deviceId: row.deviceId
-        }
+        this.temp = row
       },
       handleUpdate(row) {
         this.temp = {

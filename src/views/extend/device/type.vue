@@ -52,6 +52,9 @@
         <el-form-item label="类型名称">
           <el-input v-model="temp.typeName"></el-input>
         </el-form-item>
+        <el-form-item label="功能列表">
+          <el-input v-model="temp.typeName"></el-input>
+        </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
