@@ -68,6 +68,11 @@
           <span>{{scope.row.onlineStatus}}</span>
         </template>
       </el-table-column>
+      <el-table-column min-width="150px" label="地址">
+        <template scope="scope">
+          <span>{{scope.row.location}}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="left" label="操作">
         <template scope="scope">
           <el-button size="small" type="success" @click="handleUpdate(scope.row)">编辑
