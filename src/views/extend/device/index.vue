@@ -433,7 +433,6 @@
     methods: {
       handleOtaFileSuccess(res, file) {
         if (res.code === 200) {
-          this.$message.error('上传成功！')
           this.temp.fileName = res.data
         } else {
           this.$message.error('上传文件失败！')
@@ -504,15 +503,24 @@
           'fileName': this.temp.fileName
         }
         const tempData = Object.assign({}, requestVo)
-        otaDevice(tempData).then(() => {
-          this.otaFormVisible = false
-          this.handleFilter()
-          this.$notify({
-            title: '成功',
-            message: '推送成功',
-            type: 'success',
-            duration: 2000
-          })
+        otaDevice(tempData).then((data) => {
+          if (data.data) {
+            this.otaFormVisible = false
+            this.handleFilter()
+            this.$notify({
+              title: '成功',
+              message: '推送成功',
+              type: 'success',
+              duration: 2000
+            })
+          }else{
+            this.$notify({
+              title: '成功',
+              message: '推送成功',
+              type: 'success',
+              duration: 2000
+            })
+          }
         })
       },
       updateData() {
