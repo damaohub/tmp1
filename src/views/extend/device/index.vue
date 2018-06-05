@@ -324,13 +324,14 @@
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-form-item>
         <el-form-item label="硬件版本:">
+          <el-select v-model="otaType" placeholder="类型">
           <el-option
-            v-model="temp.otaType"
             v-for="item in otaDeviceType"
             :label="item.label"
             :value="item.value"
             :disabled="item.disabled">
           </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -368,6 +369,7 @@
           date: '123456',
           name: '小王'
         }],
+        otaType: '',
         otaFormVisible: false,
         svalue1: false,
         svalue2: false,
@@ -522,7 +524,8 @@
       handlerOtaDevice() {
         const requestVo = {
           'id': this.temp.id,
-          'fileName': this.temp.fileName
+          'fileName': this.temp.fileName,
+          'type': otaType
         }
         const tempData = Object.assign({}, requestVo)
         otaDevice(tempData).then((data) => {
