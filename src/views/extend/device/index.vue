@@ -323,7 +323,15 @@
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-form-item>
-
+        <el-form-item label="硬件版本:">
+          <el-option
+            v-model="temp.otaType"
+            v-for="item in otaDeviceType"
+            :label="item.label"
+            :value="item.value"
+            :disabled="item.disabled">
+          </el-option>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="otaFormVisible = false">取 消</el-button>
@@ -403,7 +411,21 @@
           }, {
             value: '2',
             label: '离线'
-          }],
+          }
+          ],
+        otaDeviceType: [
+          {
+            value: '1',
+            label: 'wifi-固件'
+          },
+          {
+            value: '2',
+            label: 'mcu固件'
+          }, {
+            value: '3',
+            label: '设备参数'
+          }
+        ],
         list: null,
         total: null,
         listLoading: true,
