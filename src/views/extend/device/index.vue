@@ -525,7 +525,7 @@
         const requestVo = {
           'id': this.temp.id,
           'fileName': this.temp.fileName,
-          'type': this.otaType
+          'otaType': this.otaType
         }
         const tempData = Object.assign({}, requestVo)
         otaDevice(tempData).then((data) => {
