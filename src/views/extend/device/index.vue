@@ -21,13 +21,10 @@
 
     <div class="findBox">
       <el-button-group>
-        <el-button type="primary"><i class="el-icon-circle-check"></i>分配</el-button>
-        <el-button type="primary"><i class="el-icon-circle-close"></i>解绑</el-button>
+        <el-button type="primary" @click = "macDigVisible= true"><i class="el-icon-circle-check"></i>分配mac</el-button>
         <el-button type="primary"><i class="el-icon-d-caret"></i>导出</el-button>
         <el-button type="primary"><i class="el-icon-document"></i>自定义</el-button>
         <el-button type="primary"><i class="el-icon-upload2"></i>导入</el-button>
-        <el-button type="primary"><i class="el-icon-plus"></i>添加</el-button>
-        <el-button type="primary"><i class="el-icon-delete"></i>删除</el-button>
       </el-button-group>
     </div>
 
@@ -78,6 +75,10 @@
           <el-button size="small" type="success" @click="handleUpdate(scope.row)">编辑
           </el-button>
           <el-button size="small" type="success" @click="handlerOta(scope.row)">Ota
+          </el-button>
+          <el-button size="small" type="success" @click="handlerUnbind(scope.row.id)">解绑
+          </el-button>
+          <el-button size="small" type="success" @click="handlerDestory(scope.row.id)">注销
           </el-button>
         </template>
       </el-table-column>
@@ -302,42 +303,81 @@
       </div>
     </el-dialog>
     <el-dialog :title="otaDeviceDia" :visible.sync="otaFormVisible" >
-      <el-form class="small-space" :model="temp" label-position="left" label-width="120px">
-        <el-form-item label="设备id:">
-          <span>{{temp.deviceId}}</span>
-        </el-form-item>
-        <el-form-item label="软件版本:">
-          <span>{{temp.software}}</span>
-        </el-form-item>
-        <el-form-item label="硬件版本:">
-          <span>{{temp.hardware}}</span>
-        </el-form-item>
-        <el-form-item label="升级文件">
-          <el-upload :action="baseUrl + '/api/device/upload'"
-                     drag :multiple="false"
-                     :before-upload="beforeFileUpload"
-                     :on-success = "handleOtaFileSuccess"
-                     ref="detailImage2">
+    <el-form class="small-space" :model="temp" label-position="left" label-width="120px">
+      <el-form-item label="设备id:">
+        <span>{{temp.deviceId}}</span>
+      </el-form-item>
+      <el-form-item label="软件版本:">
+        <span>{{temp.software}}</span>
+      </el-form-item>
+      <el-form-item label="硬件版本:">
+        <span>{{temp.hardware}}</span>
+      </el-form-item>
+      <el-form-item label="升级文件">
+        <el-upload :action="baseUrl + '/api/device/upload'"
+                   drag :multiple="false"
+                   :before-upload="beforeFileUpload"
+                   :on-success = "handleOtaFileSuccess"
+                   ref="detailImage2">
 
-          </el-upload>
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        </el-form-item>
-        <el-form-item label="硬件版本:">
-          <el-select v-model="otaType" placeholder="类型">
+        </el-upload>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      </el-form-item>
+      <el-form-item label="硬件版本:">
+        <el-select v-model="otaType" placeholder="类型">
           <el-option
             v-for="item in otaDeviceType"
             :label="item.label"
             :value="item.value"
             :disabled="item.disabled">
           </el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="otaFormVisible = false">取 消</el-button>
+      <el-button type="primary" @click="handlerOtaDevice">确 定</el-button>
+    </div>
+  </el-dialog>
+
+    <el-dialog  :visible.sync="macDigVisible" >
+      <el-form class="small-space" :model="temp" label-position="left" label-width="120px">
+
+        <el-form-item label="公众号:">
+          <el-select v-model="temp.publicId" placeholder="请选择">
+            <el-option
+              v-for="item in publicNumberList"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
           </el-select>
+        </el-form-item>
+
+      <el-form-item label="设备类型:">
+        <el-select v-model="temp.typeId" placeholder="请选择">
+          <el-option
+            v-for="item in typeList"
+            :label="item.typeName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+        <el-form-item label="mac">
+          <el-input v-model="temp.mac"></el-input>
+        </el-form-item>
+        <el-form-item label="设备名称">
+          <el-input v-model="temp.name"></el-input>
+        </el-form-item>
+        <el-form-item label="产品id">
+          <el-input v-model="temp.productId"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="otaFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handlerOtaDevice">确 定</el-button>
+        <el-button @click="macDigVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handlerMacCreateDeviceId">确 定</el-button>
       </div>
+
     </el-dialog>
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -352,7 +392,10 @@
 
 <script>
   import { baseUrl, baseImgPath } from '@/config/env'
-  import { queryDeviceList, queryDeviceCount, updateDevice, otaDevice } from '@/api/device'
+  import { queryDeviceList, queryDeviceCount,
+    updateDevice, otaDevice, obtainNumberList ,
+    destoryDevice, unbindDevice,
+    obtainTypeList, createDevice } from '@/api/device'
   import waves from '@/directive/waves' // 水波纹指令
 
   export default {
@@ -371,6 +414,7 @@
         }],
         otaType: '',
         otaFormVisible: false,
+        macDigVisible: false,
         svalue1: false,
         svalue2: false,
         activeName: 'first',
@@ -448,13 +492,63 @@
         textMap: {
           update: '编辑',
           create: '创建'
-        }
+        },
+        publicNumberList:[],
+        typeList:[]
       }
     },
     created() {
       this.getList()
+      obtainNumberList().then((response) => {
+         this.publicNumberList = response.data.data
+      })
+
+      obtainTypeList().then( (response) => {
+        this.typeList = response.data.data
+      })
     },
     methods: {
+      handlerMacCreateDeviceId(){
+            const data = {
+              name: this.temp.name,
+              mac: this.temp.mac,
+              productId : this.temp.productId,
+              publicId: this.tem.publicId,
+              deviceTypeId: this.temp.typeId
+            }
+            createDevice(data).then( data=>{
+              if(data.data.data){
+                this.$notify({
+                  title: '成功',
+                  message: '分配成功',
+                  type: 'success',
+                  duration: 2000
+                })
+                this.getList()
+              }
+            });
+      },
+      handlerUnbind(id){
+        unbindDevice(id).then( data=>{
+          this.$notify({
+            title: '成功',
+            message: '注销成功',
+            type: 'success',
+            duration: 2000
+          })
+        })
+      },
+      handlerDestory(id){
+       destoryDevice(id).then( data=> {
+         this.$notify({
+           title: '成功',
+           message: '注销成功',
+           type: 'success',
+           duration: 2000
+         })
+         this.getList()
+       })
+      },
       handleOtaFileSuccess(res, file) {
         if (res.code === 200) {
           this.temp.fileName = res.data

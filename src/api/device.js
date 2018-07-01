@@ -50,4 +50,27 @@ export function createDeviceType(requestVo) {
   const url = '/api/device/typeCreate'
   return http.post(url, JSON.stringify(requestVo))
 }
+export function unbindDevice(id) {
+  const url = '/api/device/unbind?id='.concat(id)
+  return http.get(url)
+}
+
+export function destoryDevice(id) {
+  const url = '/api/device/destory?id'.concat(id)
+  return http.get(url)
+}
+
+export function createDevice(requestVo) {
+  const url = '/api/device/createDevice'
+  return http.post(url, JSON.stringify(requestVo))
+}
+export function obtainNumberList() {
+  const url = '/api/publicnumber/obtainList'
+  return http.get(url)
+}
+
+export function obtainTypeList() {
+  const url = '/api/device/typeList'
+  return http.post(url,'{}')
+}
 

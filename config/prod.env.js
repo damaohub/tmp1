@@ -1,6 +1,6 @@
 module.exports = {
     NODE_ENV: '"production"',
     ENV_CONFIG: '"prod"',
-    BASE_API: '"http://www.hcocloud.com:8887/huankeadmin/"',
+    BASE_API: '"http://admin.hcocloud.com/"',
     APP_ORIGIN: '"https://wallstreetcn.com"'
 };
