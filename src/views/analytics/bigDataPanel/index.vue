@@ -1,22 +1,33 @@
 <template>
   <div class="big-data-panel">
-    <ul class="bg-bubbles">
+    <!-- <ul class="bg-bubbles">
       <li v-for="(item, index) in bubbles" :key="index"></li>
-    </ul>
-    <router-link to="/">返回</router-link>
+    </ul> -->
+    <div class="bg-img"><router-link to="/">返回</router-link></div>
+    
     <el-row class="ui-row">
       <el-col :span="5">
         <div class="grid-content bg-purple"></div>
-        <el-col :span="24" class="col">
-          <a class="setting" type="primary" size="mini" @click="toggleDialog(0)">设置</a>
+        <el-col :span="24" class="col box first">
+          <el-row type="flex"  class="box-header" justify="space-between">
+            <el-col> <h3 class="header-title">室外天气</h3></el-col>
+            <el-col><a class="setting header-right" type="primary" size="mini" @click="toggleDialog(0)">设置</a></el-col>
+          </el-row>
+          
           <WeatherOption :id="0" :visible.sync="DialogVisile[0]" @updateOption="updateWeatherOption"
-                         @toggleDialog="toggleDialog"></WeatherOption>
-          <h3>天气环境</h3>
+                         @toggleDialog="toggleDialog">
+          </WeatherOption>
+          
           <Weather :option="OptionData.WeatherOptionData"></Weather>
-
+          <el-row class="box-footer"></el-row>
         </el-col>
-        <el-col :span="24" class="col">
-          <a class="setting" type="primary" size="mini" @click="toggleDialog(1)">设置</a>
+
+        <el-col :span="24" class="col box">
+          <el-row type="flex"  class="box-header" justify="space-between">
+            <el-col> <h3 class="header-title">室外天气</h3></el-col>
+            <el-col><a class="setting header-right" type="primary" size="mini" @click="toggleDialog(1)">设置</a></el-col>
+          </el-row>
+          
           <DeviceOption :id="1" :visible.sync="DialogVisile[1]" :options="OptionData.DeviceChartOptions" @toggleDialog="toggleDialog"></DeviceOption>
           <ChartDeviceData :options="OptionData.DeviceChartOptions" @click="toggleDialog(1)"></ChartDeviceData>
         </el-col>
@@ -360,7 +371,8 @@
 
 <style lang="scss" scoped>
   .big-data-panel {
-
+    overflow-x: hidden;
+    overflow-y: auto;
     color: white;
     top: 0;
     position: fixed;
@@ -380,7 +392,9 @@
       filter: blur(5px);
     }
     .col {
-      height: 23vh;
+     // border: 1px solid #fff;
+      padding: 0;
+      height: auto;
       -webkit-backdrop-filter: blur(5px);
       border-radius: 5px;
       /* Google Chrome */
@@ -388,13 +402,12 @@
 
 
       /* 设置背景半透明黑色 */
-      background: rgba(0, 0, 0, 0.2);
-      margin-top: 10px;
-      margin-bottom: 10px;
+      // background: rgba(0, 0, 0, 0.2);
+      // margin-top: 10px;
+      // margin-bottom: 10px;
 
     }
     .ui-row {
-
       margin-left: 10px;
       margin-right: 10px;
     }
@@ -508,6 +521,85 @@
         }
       }
     }
+    .bg-img{
+      background: url('~@/assets/custom-theme/datapanel/header.png') center no-repeat;
+      height: 84px;
+    }
+    .box{
+      
+      &:not(.first){
+        margin-top: 20px;
+      }
+      .box-header{
+      // background: url('~@/assets/custom-theme/datapanel/box-header.png')  no-repeat  center;
+      // background-size: 100% 100%;
+      // height: 42px; 
+        &:before{
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-top: 1px solid #fff;
+          border-left: 1px solid #fff;
+        }
+        &:after{
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          right: 0;
+          top: 0;
+          border-top: 1px solid #fff;
+          border-right: 1px solid #fff;
+        }   
+        .header-title{
+          margin: 0;
+          line-height: 200%;
+          text-align: left;
+          padding-left: 8px;
+        }
+        .header-right{
+          margin: 0;
+          line-height: 200%;
+          text-align: right;
+          padding-right: 10px;
+        }
+        
+      }
+      .box-footer{
+        &:before{
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          border-bottom: 1px solid #fff;
+          border-left: 1px solid #fff;
+        }
+        &:after{
+          content: '';
+          display: block;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          border-bottom: 1px solid #fff;
+          border-right: 1px solid #fff;
+        }   
+      }
+      
+
+
+
+    }
+    
   }
 
 

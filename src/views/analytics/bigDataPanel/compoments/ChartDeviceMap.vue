@@ -293,8 +293,10 @@
             ),
             symbolSize: 5,
             showEffectOn: 'render',
+            effectType: 'ripple',
             rippleEffect: {
-              brushType: 'stroke'
+              scale: 5,
+              brushType: 'fill'
             },
             hoverAnimation: true,
             label: {
@@ -306,9 +308,9 @@
             },
             itemStyle: {
               normal: {
-                color: '#FFF',
+                color: 'red',
                 shadowBlur: 10,
-                shadowColor: '#4DF997'
+                shadowColor: '#fff'
               }
             },
             zlevel: 1

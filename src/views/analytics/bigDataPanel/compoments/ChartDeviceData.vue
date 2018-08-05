@@ -21,15 +21,7 @@
     },
     mounted() {
       this.option = {
-        title: {
-          text: '设备数据',
-          left: 'center',
-          textStyle: {
-            color: '#fff',
-            textShadowColor: 'rgba(73, 217, 252, 1)',
-            textShadowBlur: 10
-          }
-        },
+       
 
         xAxis: {
           type: 'category',
@@ -153,7 +145,7 @@
     height: 100%;
   }
   .chart {
-    height: 100%;
+    min-height: 200px;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
